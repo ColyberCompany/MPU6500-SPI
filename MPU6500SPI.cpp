@@ -7,9 +7,17 @@
 #include "MPU6050SPIRegisters.h"
 #include <SPI.h>
 
-MPU6500SPI::MPU6500SPI(uint32_t spiClock, uint8_t csPin)
-	: PinCS(csPin),
-	  spiSettings(spiClock, MSBFIRST, SPI_MODE3)
+MPU6500SPI::MPU6500SPI(uint32_t spiClock, uint8_t csPin):
+	bus(SPI),
+	PinCS(csPin),
+	spiSettings(spiClock, MSBFIRST, SPI_MODE3)
+{
+}
+
+MPU6500SPI::MPU6500SPI(SPIClass& spiBus, uint32_t spiClock, uint8_t csPin):
+	bus(spiBus),
+	PinCS(csPin),
+	spiSettings(spiClock, MSBFIRST, SPI_MODE3)
 {
 }
 
@@ -198,8 +206,8 @@ void MPU6500SPI::setGyroScale(GyroScale scale)
 uint8_t MPU6500SPI::writeReg(uint8_t addr, uint8_t data)
 {
 	select();
-	SPI.transfer(addr);
-	uint8_t response = SPI.transfer(data);
+	bus.transfer(addr);
+	uint8_t response = bus.transfer(data);
 	deselect();
 
 	return response;
@@ -208,8 +216,8 @@ uint8_t MPU6500SPI::writeReg(uint8_t addr, uint8_t data)
 uint8_t MPU6500SPI::readReg(uint8_t addr)
 {
 	select();
-	SPI.transfer(addr | READ_FLAG);
-	uint8_t response = SPI.transfer(0x00);
+	bus.transfer(addr | READ_FLAG);
+	uint8_t response = bus.transfer(0x00);
 	deselect();
 
 	return response;
@@ -218,10 +226,10 @@ uint8_t MPU6500SPI::readReg(uint8_t addr)
 void MPU6500SPI::readRegs(uint8_t addr, uint8_t *readBuf, uint16_t count)
 {
 	select();
-	SPI.transfer(addr | READ_FLAG);
+	bus.transfer(addr | READ_FLAG);
 	for (uint16_t i = 0; i < count; i++)
 	{
-		readBuf[i] = SPI.transfer(0x00);
+		readBuf[i] = bus.transfer(0x00);
 	}
 	deselect();
 }

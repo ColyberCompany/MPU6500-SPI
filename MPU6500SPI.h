@@ -1,6 +1,7 @@
 /**
  * @file MPU6500SPI.h
  * @author Jan Wielgus
+ * @brief Based on https://github.com/brianc118/MPU9250
  */
 
 #ifndef MPU6500SPI_h

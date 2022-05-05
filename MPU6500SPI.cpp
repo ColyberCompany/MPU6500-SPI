@@ -70,9 +70,9 @@ void MPU6500SPI::readAll()
 	normAcceleration.x = rawAcceleration.x * accScaleMult;
 	normAcceleration.y = rawAcceleration.y * accScaleMult;
 	normAcceleration.z = rawAcceleration.z * accScaleMult;
-	normRotation.x = rawRotation.x * accScaleMult;
-	normRotation.y = rawRotation.y * accScaleMult;
-	normRotation.z = rawRotation.z * accScaleMult;
+	normRotation.x = rawRotation.x * gyroScaleMult;
+	normRotation.y = rawRotation.y * gyroScaleMult;
+	normRotation.z = rawRotation.z * gyroScaleMult;
 
 	temperature_degC = ((float)rawTemperature * 0.002941f) + 36.53f; // * 0.002941f is same as / 340
 }
@@ -108,9 +108,9 @@ void MPU6500SPI::readGyro()
 	rawRotation.y -= gyroOffset.y;
 	rawRotation.z -= gyroOffset.z;
 
-	normRotation.x = rawRotation.x * accScaleMult;
-	normRotation.y = rawRotation.y * accScaleMult;
-	normRotation.z = rawRotation.z * accScaleMult;
+	normRotation.x = rawRotation.x * gyroScaleMult;
+	normRotation.y = rawRotation.y * gyroScaleMult;
+	normRotation.z = rawRotation.z * gyroScaleMult;
 }
 
 void MPU6500SPI::readTemp()

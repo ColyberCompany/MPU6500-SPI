@@ -57,12 +57,14 @@ private:
 	float gyroScaleMult;		// value to multiply raw reading based on gyroScale
 
 	// SPI config
+	SPIClass& bus;
 	const uint8_t PinCS;
 	SPISettings spiSettings;
 
 
 public:
 	MPU6500SPI(uint32_t spiClock, uint8_t csPin);
+	MPU6500SPI(SPIClass& bus, uint32_t spiClock, uint8_t csPin);
 
 	bool initialize();
 
@@ -130,14 +132,14 @@ inline MPU6500SPI::vector3Float MPU6500SPI::getNormalizedRotation()
 
 inline void MPU6500SPI::select()
 {
-    SPI.beginTransaction(spiSettings);
+    bus.beginTransaction(spiSettings);
     digitalWrite(PinCS, LOW);
 }
 
 inline void MPU6500SPI::deselect()
 {
     digitalWrite(PinCS, HIGH);
-    SPI.endTransaction();
+    bus.endTransaction();
 }
 
 

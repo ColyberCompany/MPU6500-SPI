@@ -66,6 +66,14 @@ void MPU6500SPI::readAll()
 	rawRotation.y -= gyroOffset.y;
 	rawRotation.z -= gyroOffset.z;
 
+	// Calculate normalized
+	normAcceleration.x = rawAcceleration.x * accScaleMult;
+	normAcceleration.y = rawAcceleration.y * accScaleMult;
+	normAcceleration.z = rawAcceleration.z * accScaleMult;
+	normRotation.x = rawRotation.x * accScaleMult;
+	normRotation.y = rawRotation.y * accScaleMult;
+	normRotation.z = rawRotation.z * accScaleMult;
+
 	temperature_degC = ((float)rawTemperature * 0.002941f) + 36.53f; // * 0.002941f is same as / 340
 }
 
